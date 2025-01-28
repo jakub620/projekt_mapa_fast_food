@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+		
+		    .autocomplete-results {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        background: white;
+        border: 1px solid #ccc;
+        max-height: 200px; 
+        overflow-y: auto; 
+        position: absolute;
+        width: 200px;
+        z-index: 1000;
+    }
+
+    .autocomplete-results li {
+        padding: 5px;
+        cursor: pointer;
+    }
+
+    .autocomplete-results li:hover {
+        background: #eee;
+    }
+    </style>
+    <title>Mapa fast food</title>
+    <link rel="icon" type="image/ico" href="zdjecie.ico" />
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <link rel="stylesheet" href="leaflet.css">
+    <script src="leaflet.js"></script>
+	
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.4.3/dist/esri-leaflet-geocoder.css" />
+<script src="https://unpkg.com/esri-leaflet-geocoder@2.4.3/dist/esri-leaflet-geocoder.js"></script>
+
+
+
+
+
+
+
+
+	
+    <script>
+        var mymap = L.map('map', { maxZoom: 20 }).setView([52.23, 21.01], 12);
+
+        var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {
+            foo: 'bar',
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        });
+        osm.addTo(mymap);
+		
+
+
+var ortofotomapa = L.tileLayer.wms('https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/StandardResolution', {
+    layers: 'Raster',
+    format: 'image/png',
+    transparent: true,
+    attribution: '&copy; Geoportal'
+});
+
+
+
+
+     var geojson_points = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/181717228",
+        "name": "McDonald's",
+        "addr:city": "Warszawa",
+        "addr:street": "Górczewska",
+        "addr:housenumber": "249"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          20.8981249,
+          52.2390132
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/247461213",
+        "name": "KFC",
+        "addr:city": "Warszawa",
+        "addr:street": "Aleje Jerozolimskie",
+        "addr:housenumber": "11/19"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.0170115,
+          52.2306898
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/248212390",
+        "name": "KFC",
+        "addr:city": "Warszawa",
+        "addr:street": "Unknown",
+        "addr:housenumber": "Unknown"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.0019452,
+          52.2450813
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/248994742",
+        "name": "McDonald's",
+        "addr:city": "Warszawa",
+        "addr:street": "Wiertnicza",
+        "addr:housenumber": "35"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.0836693,
+          52.1688162
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/255110166",
+        "name": "KFC",
+        "addr:city": "Warszawa",
+        "addr:street": "Unknown",
+        "addr:housenumber": "Unknown"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.0431352,
+          52.1450129
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/255162618",
+        "name": "KFC",
+        "addr:city": "Warszawa",
+        "addr:street": "Zwycięzców",
+        "addr:housenumber": "30"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.0581892,
+          52.2316943
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/278830758",
+        "name": "McDonald's",
+        "addr:city": "Warszawa",
+        "addr:street": "Dzika",
+        "addr:housenumber": "29"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          20.9824913,
+          52.252988
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/279035718",
+        "name": "McDonald's",
+        "addr:city": "Warszawa",
+        "addr:street": "Aleja „Solidarności”",
+        "addr:housenumber": "117"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          20.9942725,
+          52.2418807
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/279035799",
+        "name": "KFC",
+        "addr:city": "Warszawa",
+        "addr:street": "Aleja „Solidarności”",
+        "addr:housenumber": "82"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          20.9938324,
+          52.2423114
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/316886537",
+        "name": "KFC",
+        "addr:city": "Warszawa",
+        "addr:street": "Piękna",
+        "addr:housenumber": "28/34"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.0162726,
+          52.2233983
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/344393407",
+        "name": "KFC",
+        "addr:city": "Warszawa",
+        "addr:street": "Górczewska",
+        "addr:housenumber": "93"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          20.946754,
+          52.2385979
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/399205494",
+        "name": "KFC",
+        "addr:city": "Warszawa",
+        "addr:street": "Unknown",
+        "addr:housenumber": "Unknown"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.0637846,
+          52.186076
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/558530789",
+        "name": "Burger King",
+        "addr:city": "Warszawa",
+        "addr:street": "Złota",
+        "addr:housenumber": "59"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.002367,
+          52.2299541
+        ]
+      }
+    },
+	{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/560867975",
+    "name": "McDonald's",
+    "addr:city": "Warszawa",
+    "addr:street": "Prosta",
+    "addr:housenumber": "69"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      20.9845235,
+      52.229675
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/746517134",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Aleje Jerozolimskie",
+    "addr:housenumber": "42"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0156175,
+      52.2309362
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/830688390",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Aleje Jerozolimskie",
+    "addr:housenumber": "124"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0701496,
+      52.181344
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/900519007",
+    "name": "McDonald's",
+    "addr:city": "Warszawa",
+    "addr:street": "Jubilerska",
+    "addr:housenumber": "1/3"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.1197955,
+      52.2347573
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/1118690272",
+    "name": "KFC",
+    "addr:city": "Warszawa",
+    "addr:street": "Targowa",
+    "addr:housenumber": "72"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0375642,
+      52.2542774
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/1118690494",
+    "name": "McDonald's",
+    "addr:city": "Warszawa",
+    "addr:street": "Targowa",
+    "addr:housenumber": "72"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0374025,
+      52.2544232
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/1158861057",
+    "name": "McDonald's",
+    "addr:city": "Warszawa",
+    "addr:street": "Górczewska",
+    "addr:housenumber": "124"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      20.9334865,
+      52.2419017
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/1158861062",
+    "name": "KFC",
+    "addr:city": "Warszawa",
+    "addr:street": "Górczewska",
+    "addr:housenumber": "124"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      20.9332224,
+      52.2418984
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/1286207676",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Unnamed Street",
+    "addr:housenumber": "N/A"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0664143,
+      52.1317082
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/1368779606",
+    "name": "McDonald's",
+    "addr:city": "Warszawa",
+    "addr:street": "Głębocka",
+    "addr:housenumber": "15"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0586244,
+      52.3028228
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/1412655538",
+    "name": "McDonald's",
+    "addr:city": "Warszawa",
+    "addr:street": "Puławska"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0260407,
+      52.1413935
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/1489261255",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Aleja Jana Pawła II",
+    "addr:housenumber": "41A"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      20.9921334,
+      52.2428926
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/1491636150",
+    "name": "KFC",
+    "addr:city": "Warszawa",
+    "addr:street": "Aleje Jerozolimskie",
+    "addr:housenumber": "184"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      20.9344271,
+      52.2012059
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/1626974760",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Unnamed Street",
+    "addr:housenumber": "N/A"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      20.9120681,
+      52.2475673
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/1710660432",
+    "name": "KFC",
+    "addr:city": "Warszawa",
+    "addr:street": "Unnamed Street",
+    "addr:housenumber": "N/A"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0413854,
+      52.1540079
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/1750701705",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Adama Mickiewicza",
+    "addr:housenumber": "27"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      20.9857034,
+      52.2683404
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/1795363605",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Grójecka",
+    "addr:housenumber": "20C"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      20.9856404,
+      52.2219367
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/1857068889",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Unnamed Street",
+    "addr:housenumber": "N/A"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0925871,
+      52.2240586
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/2225455455",
+    "name": "KFC",
+    "addr:city": "Warszawa",
+    "addr:street": "Puławska",
+    "addr:housenumber": "17"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0217464,
+      52.2109531
+    ]
+  }
+},
+
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/560867975",
+        "name": "KFC",
+        "addr:city": "Warszawa",
+        "addr:street": "Złota",
+        "addr:housenumber": "59"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.002591,
+          52.2302442
+        ]
+      }
+    },
+	{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/2390051906",
+    "name": "Burger King",
+    "addr:city": "Warszawa",
+    "addr:street": "Widok",
+    "addr:housenumber": "26"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0121639,
+      52.2311341
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/2547866125",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Unnamed",
+    "addr:housenumber": "Unknown"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0452088,
+      52.1428721
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/3048224518",
+    "name": "McDonald's",
+    "addr:city": "Warszawa",
+    "addr:street": "Połczyńska",
+    "addr:housenumber": "28"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      20.9156635,
+      52.2207628
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/3660993621",
+    "name": "McDonald's",
+    "addr:city": "Warszawa",
+    "addr:street": "Unnamed",
+    "addr:housenumber": "Unknown"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      20.984337,
+      52.256718
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/3733017514",
+    "name": "McDonald's",
+    "addr:city": "Warszawa",
+    "addr:street": "Aleje Jerozolimskie",
+    "addr:housenumber": "228"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      20.9105357,
+      52.1880137
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/3890134269",
+    "name": "KFC",
+    "addr:city": "Warszawa",
+    "addr:street": "Głębocka",
+    "addr:housenumber": "15"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0548861,
+      52.301829
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/3983135023",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Nowy Świat",
+    "addr:housenumber": "19"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0197913,
+      52.23241
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/3983135970",
+    "name": "KFC",
+    "addr:city": "Warszawa",
+    "addr:street": "Widok",
+    "addr:housenumber": "26"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0122106,
+      52.2310419
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/4046831854",
+    "name": "McDonald's",
+    "addr:city": "Warszawa",
+    "addr:street": "Unnamed",
+    "addr:housenumber": "Unknown"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0094926,
+      52.235166
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/4286855909",
+    "name": "McDonald's",
+    "addr:city": "Warszawa",
+    "addr:street": "Świętokrzyska",
+    "addr:housenumber": "3"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0187971,
+      52.2369731
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/4387346115",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Świętokrzyska",
+    "addr:housenumber": "34"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.0009732,
+      52.2339885
+    ]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/4450179773",
+    "name": "KFC",
+    "addr:city": "Warszawa",
+    "addr:street": "Unnamed",
+    "addr:housenumber": "Unknown"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      20.9844247,
+      52.2566566
+    ]
+  }
+},
+
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5106026253",
+        "name": "KFC",
+        "addr:city": "Warszawa",
+        "addr:street": "Unknown",
+        "addr:housenumber": "Unknown"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [20.9672285, 52.3179455]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5106026254",
+        "name": "Burger King",
+        "addr:city": "Warszawa",
+        "addr:street": "Unknown",
+        "addr:housenumber": "Unknown"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [20.9672856, 52.3178787]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5133532420",
+        "name": "McDonald's",
+        "addr:city": "Warszawa",
+        "addr:street": "Kijowska",
+        "addr:housenumber": "20"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.0519237, 52.2523017]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5191505383",
+        "name": "Kebab King",
+        "addr:city": "Warszawa",
+        "addr:street": "Unknown",
+        "addr:housenumber": "Unknown"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [20.8996948, 52.1873143]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5194804386",
+        "name": "Kebab King",
+        "addr:city": "Warszawa",
+        "addr:street": "Unknown",
+        "addr:housenumber": "Unknown"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [20.983859, 52.2569023]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5454600537",
+        "name": "McDonald's",
+        "addr:city": "Warszawa",
+        "addr:street": "Grochowska",
+        "addr:housenumber": "207"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.0865066, 52.2444105]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5510485947",
+        "name": "McDonald's",
+        "addr:city": "Warszawa",
+        "addr:street": "Żwirki i Wigury",
+        "addr:housenumber": "1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [20.9724214, 52.1702417]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5510485950",
+        "name": "McDonald's",
+        "addr:city": "Warszawa",
+        "addr:street": "Żwirki i Wigury",
+        "addr:housenumber": "1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [20.9726685, 52.1707436]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5736170948",
+        "name": "Pizza Hut",
+        "addr:city": "Warszawa",
+        "addr:street": "Aleja Jana Rodowicza \"Anody\"",
+        "addr:housenumber": "22"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.0411567, 52.1585453]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6497283194",
+        "name": "McDonald's",
+        "addr:city": "Warszawa",
+        "addr:street": "Unknown",
+        "addr:housenumber": "Unknown"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [20.9315615, 52.2953658]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6497283195",
+        "name": "Pizza Hut Express",
+        "addr:city": "Warszawa",
+        "addr:street": "Unknown",
+        "addr:housenumber": "Unknown"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [20.931422, 52.2951242]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6497283196",
+        "name": "Burger King",
+        "addr:city": "Warszawa",
+        "addr:street": "Unknown",
+        "addr:housenumber": "Unknown"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [20.9315722, 52.2951431]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6497283197",
+        "name": "KFC",
+        "addr:city": "Warszawa",
+        "addr:street": "Unknown",
+        "addr:housenumber": "Unknown"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [20.9312426, 52.2951045]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6497283199",
+        "name": "Kebab King",
+        "addr:city": "Warszawa",
+        "addr:street": "Unknown",
+        "addr:housenumber": "Unknown"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [20.9310753, 52.2949841]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6534042567",
+        "name": "Pizza Hut",
+        "addr:city": "Warszawa",
+        "addr:street": "Unknown",
+        "addr:housenumber": "Unknown"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.082058, 52.2353524]
+      }
+    },
+	{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/6635484245",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Niepodległości",
+    "addr:housenumber": "12"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [21.0791923, 52.3040405]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/7342433974",
+    "name": "Burger King",
+    "addr:city": "Warszawa",
+    "addr:street": "Górczewska",
+    "addr:housenumber": "124"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [20.9333461, 52.2419043]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/7705220156",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Nowy Świat",
+    "addr:housenumber": "54/56",
+    "addr:postcode": "00-363"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [21.0187311, 52.2352321]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/7797630037",
+    "name": "McDonald's",
+    "addr:city": "Warszawa",
+    "addr:street": "Marszałkowska",
+    "addr:housenumber": "20"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [20.9844615, 52.2289732]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/7855264300",
+    "name": "McDonald's",
+    "addr:city": "Warszawa",
+    "addr:street": "Senatorska",
+    "addr:housenumber": "2",
+    "addr:postcode": "00-252"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [21.0126287, 52.2470776]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/7989720408",
+    "name": "KFC",
+    "addr:city": "Warszawa",
+    "addr:street": "Kijowska",
+    "addr:housenumber": "20",
+    "addr:postcode": "03-743"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [21.0520223, 52.2523271]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/8531172298",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Targowa",
+    "addr:housenumber": "64"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [21.0372351, 52.2528725]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/8757949553",
+    "name": "Pizza Hut Express",
+    "addr:city": "Warszawa",
+    "addr:street": "Nowogrodzka",
+    "addr:housenumber": "2"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [20.9488675, 52.3322959]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/8908026119",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Chmielna",
+    "addr:housenumber": "5"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [21.0555416, 52.2756945]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/9613010517",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Aleja 3 Maja",
+    "addr:housenumber": "3B"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [21.0341895, 52.2341274]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/9917735917",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Ząbkowska",
+    "addr:housenumber": "6"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [21.038885, 52.2526387]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/9937398119",
+    "name": "Let's Eat",
+    "addr:city": "Warszawa",
+    "addr:street": "Ząbkowska",
+    "addr:housenumber": "6"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [21.038885, 52.2526387]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/10138529417",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Lwowska",
+    "addr:housenumber": "1"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [21.0117746, 52.2204523]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/11698986340",
+    "name": "KFC",
+    "addr:city": "Warszawa",
+    "addr:street": "Modlińska",
+    "addr:housenumber": "203",
+    "addr:postcode": "03-122"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [20.9697475, 52.3228503]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/11948345618",
+    "name": "Kebab King",
+    "addr:city": "Warszawa",
+    "addr:street": "Al. Jana Pawła",
+    "addr:housenumber": "12"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [20.9411803, 52.334949]
+  }
+},
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/12219072646",
+    "name": "KFC",
+    "addr:city": "Warszawa",
+    "addr:street": "Jana Pawła II",
+    "addr:housenumber": "26"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [20.9506113, 52.2130126]
+  }
+},
+
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6545623337",
+        "name": "Kebab King",
+        "addr:city": "Warszawa",
+        "addr:street": "Unknown",
+        "addr:housenumber": "Unknown"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.0862302, 52.2442669]
+      }
+    },
+	
+	
+{
+  "type": "Feature",
+  "properties": {
+    "@id": "node/5106026250",
+    "name": "McDonald's",
+    "addr:city": "Warszawa",
+    "addr:street": "Unnamed",
+    "addr:housenumber": "Unknown"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      20.9670645,
+      52.3181475
+    ]
+  }
+}
+
+	
+	
+	
+  ]
+};
+
+
+        function PtoL(feature, latlng) {
+            var style = {
+                radius: 5,
+                opacity: 1,
+                color: 'black',
+                weight: 0.8,
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'red'
+            };
+            return L.circleMarker(latlng, style);
+        }
+
+        function oEF(feature, layer) {
+            var props = feature.properties;
+            layer.bindTooltip(
+                `<b>${props.name}</b><br>${props['addr:street']} ${props['addr:housenumber']}<br>${props['addr:city']}`,
+                { permanent: false }
+            );
+        }
+
+        var points_layer = L.geoJSON(geojson_points, {
+            onEachFeature: oEF,
+            pointToLayer: PtoL
+        }).addTo(mymap);
+		
+		
+		
+		
+	L.control.scale().addTo(mymap);
+	
+var baseLayers = {
+    "OpenStreetMap": osm,
+    "Ortofotomapa": ortofotomapa
+};
+
+
+
+
+var overlays = {
+    "Moje punkciki": points_layer,
+};
+
+L.control.layers(baseLayers, { "Moje punkciki": points_layer }).addTo(mymap);
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+var results = L.layerGroup().addTo(mymap);
+
+var searchControl = L.control({ position: 'topright' });
+
+searchControl.onAdd = function () {
+    var div = L.DomUtil.create('div', 'search-box');
+    div.innerHTML = `
+        <input type="text" id="search-input" placeholder="Search for places">
+        <ul id="search-results" class="autocomplete-results"></ul>
+    `;
+    L.DomEvent.disableClickPropagation(div);
+    return div;
+};
+
+searchControl.addTo(mymap);
+
+document.getElementById('search-input').addEventListener('input', function (e) {
+    var query = e.target.value.toLowerCase();
+    var resultList = document.getElementById('search-results');
+    resultList.innerHTML = ''; 
+
+    var found = geojson_points.features.filter(feature =>
+        feature.properties.name.toLowerCase().includes(query)
+    );
+
+    if (found.length > 0) {
+        found.forEach(function (feature) {
+            var listItem = document.createElement('li');
+            listItem.textContent = `${feature.properties.name} - ${feature.properties["addr:street"]} ${feature.properties["addr:housenumber"]}`;
+            listItem.addEventListener('click', function () {
+                var coords = feature.geometry.coordinates;
+                var marker = L.marker([coords[1], coords[0]])
+                    .bindPopup(`<b>${feature.properties.name}</b><br>${feature.properties["addr:street"]} ${feature.properties["addr:housenumber"]}<br>${feature.properties["addr:city"]}`)
+                    .addTo(results)
+                    .openPopup();
+                mymap.setView([coords[1], coords[0]], 15);
+                resultList.innerHTML = ''; 
+            });
+            resultList.appendChild(listItem);
+        });
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+		
+
+mymap.attributionControl.setPrefix(
+	'<a href="http://leafletis.com">Leaflet</a> |Geoportal Fast food Warszawa',
+	);
+	
+    </script>
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</body>
+</html>
